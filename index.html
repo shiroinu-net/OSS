@@ -1,16 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Morphing</title>
-    <link rel="stylesheet" href="textmorphing.css"> </head>
-<div class="morphing">
-  <div class="word">the</div>
-  <div class="word">answer</div>
-  <div class="word">,</div>
-  <div class="word">=</div>
-  <div class="word">42</div>
-  <div class="word"></div>
-  <div class="word">...</div>
-  <div class="word">the answer,</div>
-  <div class="word">=42</div>
-</div>
+    <title>Text Morphing Sequence</title>
+    <link rel="stylesheet" href="textmorphing.css">
+</head>
+<body>
+  <div class="morphing">
+    <div class="initial-content">
+      <div class="word">the</div>
+      <div class="word">answer</div>
+      <div class="word">,</div>
+      <div class="word">=</div>
+      <div class="word">42</div>
+      <div class="word"></div>
+      <div class="word">...</div>
+      <div class="word slow">{{ next }}</div>
+      <div class="word slow changeName">Something</div>
+    </div>
+  </div>
+
+<script src="textmorphing.js"></script>
+
+</body>
+</html>

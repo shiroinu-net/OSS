@@ -1,4 +1,4 @@
-@use "sass:math"; // sass:mathモジュールを読み込みます
+@use "sass:math";
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
 
@@ -12,32 +12,54 @@ body {
   font-family: 'Roboto Slab', serif;
 }
 
+// --- 変数の定義 ---
+// JavaScript側でも使う可能性があるので残しても良いが、必須ではなくなる
 $speed: 20s;
-$wordCount: 9; // HTML内の .word の数に合わせてください (textmorphing_1.html では8個なので、8にするのが適切かもしれません)
+$speed-slow: 40s;
+// $wordCount も SCSS での遅延計算には不要になる
 
 .morphing {
   position: relative;
-  font-size: 120px;
+  font-size: 20px;
   background-color: #ffffff;
   color: #8a8a8a;
   min-height: 100vh;
   filter: contrast(25) blur(1px);
+
+  .initial-content {
+      .word {
+          position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%, -50%);
+          color: inherit;
+          opacity: 0; // 初期状態は非表示
+
+          // ↓↓↓ JSで付与するクラスでアニメーションを定義 ↓↓↓
+          &.animate {
+             animation: word $speed ease-in-out 1 forwards; // 1回再生し、最後の状態を維持
+             opacity: 0; // アニメーション開始時の opacity を確実に 0 に
+             // visibility: visible; // hidden にしていた場合はここで visible に
+          }
+
+          // .slow クラスを持つ要素のアニメーションを上書き
+          &.animate.slow {
+             animation-duration: $speed-slow;
+          }
+
+      }
+  }
 }
 
-.word {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  animation: word $speed infinite ease-in-out;
+// --- キーフレームアニメーション ---
+@keyframes word {
+  // JSで1回再生にするため、100% の状態を調整する必要があるかも
+  // 例: 最後は消えるようにする
+  // 0%, 5% { filter: blur(0px); opacity: 1; }
+  // 20%, 80% { filter: blur(1em); opacity: 0; }
+  // 100% { filter: blur(1em); opacity: 0; } // 最後は消える
 
-  @for $i from 0 to $wordCount {
-    &:nth-child(#{$i + 1}) {
-      animation-delay: (math.div($speed, $wordCount + 1) * $i) - $speed;
-    }
-  }
-
-  @keyframes word {
-    0%, 5%, 100% { filter: blur(0px); opacity: 1; }
-    20%, 80% { filter: blur(1em); opacity: 0; }
-  }
+  // または、表示し続ける場合 (forwards と組み合わせる)
+   0%, 5% { filter: blur(0px); opacity: 1; }
+   20%, 80% { filter: blur(1em); opacity: 0; }
+   // 80%以降は最後の状態(opacity: 0)が forwards で維持される
 }
