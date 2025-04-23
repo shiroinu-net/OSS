@@ -12,9 +12,14 @@ body {
   font-family: 'Roboto Slab', serif;
 }
 
+<<<<<<< HEAD
 // --- 変数の定義 ---
 $speed: 30s;       // 基本速度 (必要なら調整)
 $wordCount: 8;     // ★ HTML内の .word の総数に合わせてください
+=======
+$speed: 20s;
+$wordCount: 11; // HTML内の .word の数に合わせてください (textmorphing_1.html では8個なので、8にするのが適切かもしれません)
+>>>>>>> 1f1b9690ff9271bf24b4962c3b0a67ae59cde4ce
 
 .morphing {
   position: relative;
