@@ -11,40 +11,36 @@
 body {
   font-family: 'Roboto Slab', serif;
 }
-// --- 変数の定義 ---
-$speed: 30s;       // 基本速度 (必要なら調整)
-$wordCount: 8;     // ★ HTML内の .word の総数に合わせてください
+
+$speed: 30s; 
+$wordCount: 8;
 
 .morphing {
   position: relative;
   font-size: 100px;
-  background-color: #000; // 必要なら調整
-  color: #fff;           // 必要なら調整
+  background-color: #000; 
+  color: #fff; 
   min-height: 100vh;
   filter: contrast(25) blur(1px);
 
-  .initial-content { // HTML構造に合わせる
+  .initial-content {
       .word {
           position: absolute;
           top: 50%; left: 50%;
           transform: translate(-50%, -50%);
           color: inherit;
           opacity: 0; // ★ 初期状態は非表示 (重なり防止のため重要)
-          // ↓ infinite ループのアニメーションを直接指定
           animation: word $speed infinite ease-in-out;
 
-          // ↓ @for ループで animation-delay を設定
           @for $i from 0 to $wordCount {
               &:nth-child(#{$i + 1}) {
                   animation-delay: (math.div($speed, $wordCount + 1) * $i) - $speed;
               }
           }
-          // ★ .slow クラスによる duration 上書きは削除（速度差は今回は扱わない）
       }
   }
 }
 
-// --- キーフレームアニメーション ---
 @keyframes word {
   0%, 5%, 100% { filter: blur(0px); opacity: 1; }
   20%, 80% { filter: blur(1em); opacity: 0; }

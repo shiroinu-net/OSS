@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // イベント発生元が .slow クラスを持っているか確認
             if (word.classList.contains('slow')) {
-                // ★★★ 変更点: 現在の要素のアニメーションを一時停止 ★★★
                 console.log(`Word ${index} is slow. Pausing its animation for ${pauseDurationMs}ms.`);
                 word.style.animationPlayState = 'paused'; // アニメーションを一時停止
 
@@ -25,21 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log(`  Resuming animation for word ${index}.`);
                     word.style.animationPlayState = 'running'; // アニメーションを再開
                 }, pauseDurationMs);
-                 // ★★★ ここまで変更 ★★★
             }
         });
     });
 
-    // --- 時間によるテキスト変更ロジック (変更なし) ---
+    // --- 時間によるテキスト変更ロジック  ---
     function updateDynamicTexts() {
         const now = new Date();
         const currentHour = now.getHours();
-        const currentMinutes = now.getMinutes(); // 分を取得
+        const currentMinutes = now.getMinutes();
     
         // --- '.changeName' 要素の更新 ---
         const nameElement = document.querySelector('.word.changeName');
         if (nameElement) {
-            let nameDisplayText = "Something"; // デフォルト
+            let nameDisplayText = "";
     
             if (currentHour >= 15 && currentHour < 16) { nameDisplayText = "名古屋Orchest-Lab"; }
             else if (currentHour >= 16 && currentHour < 17) { nameDisplayText = "化ける身"; }
@@ -48,8 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (currentHour === 18 && currentMinutes < 15) { nameDisplayText = "the MusicVideo"; }
             // ↓↓↓ 18:15 以降の条件 (18時かつ15分以上、または19時以降) ↓↓↓
             else if (currentHour > 18 || (currentHour === 18 && currentMinutes >= 15)) { nameDisplayText = "thank you"; }
-            // ↑↑↑ 条件を修正・追加 ↑↑↑
-            // それ以外の時間（10時前）は "Something" になる
     
             if (nameElement.textContent !== nameDisplayText) {
                 nameElement.textContent = nameDisplayText;
@@ -67,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 comingDisplayText = "about";
             }
             else if (currentHour > 18 || (currentHour === 18 && currentMinutes >= 15)) {
-                comingDisplayText = " "; // 半角スペースに設定
+                comingDisplayText = ""; 
             }
             // それ以外の時間は "Coming up next.." になる
     
