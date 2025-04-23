@@ -31,21 +31,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- 時間によるテキスト変更ロジック (変更なし) ---
-    function updateChangeNameText() {
-        const targetElement = document.querySelector('.word.changeName');
-        if (!targetElement) return;
+    function updateDynamicTexts() {
         const now = new Date();
         const currentHour = now.getHours();
-        let displayText = "Something";
-        if (currentHour >= 10 && currentHour < 15) { displayText = "   "; }
-        else if (currentHour >= 15 && currentHour < 16) { displayText = "名古屋Orchest-Lab"; }
-        else if (currentHour >= 16 && currentHour < 17) { displayText = "化ける身"; }
-        else if (currentHour >= 17 && currentHour < 18) { displayText = "Rishao"; }
-        if (targetElement.textContent !== displayText) {
-            targetElement.textContent = displayText;
+        const currentMinutes = now.getMinutes(); // 分を取得
+    
+        // --- '.changeName' 要素の更新 ---
+        const nameElement = document.querySelector('.word.changeName');
+        if (nameElement) {
+            let nameDisplayText = "Something"; // デフォルト
+    
+            if (currentHour >= 15 && currentHour < 16) { nameDisplayText = "名古屋Orchest-Lab"; }
+            else if (currentHour >= 16 && currentHour < 17) { nameDisplayText = "化ける身"; }
+            else if (currentHour >= 17 && currentHour < 18) { nameDisplayText = "Rishao"; }
+            // ↓↓↓ 18:00 から 18:14 の条件 ↓↓↓
+            else if (currentHour === 18 && currentMinutes < 15) { nameDisplayText = "the MusicVideo"; }
+            // ↓↓↓ 18:15 以降の条件 (18時かつ15分以上、または19時以降) ↓↓↓
+            else if (currentHour > 18 || (currentHour === 18 && currentMinutes >= 15)) { nameDisplayText = "thank you"; }
+            // ↑↑↑ 条件を修正・追加 ↑↑↑
+            // それ以外の時間（10時前）は "Something" になる
+    
+            if (nameElement.textContent !== nameDisplayText) {
+                nameElement.textContent = nameDisplayText;
+                console.log("Updated changeName text to:", nameDisplayText);
+            }
+        }
+    
+        // --- '.changeComingText' 要素の更新 ---
+        const comingElement = document.querySelector('.word.changeComingText');
+        if (comingElement) {
+            let comingDisplayText = "Coming up next.."; // デフォルト
+    
+            // 18時以降の条件を追加
+            if (currentHour === 18 && currentMinutes < 15) {
+                comingDisplayText = "about";
+            }
+            else if (currentHour > 18 || (currentHour === 18 && currentMinutes >= 15)) {
+                comingDisplayText = " "; // 半角スペースに設定
+            }
+            // それ以外の時間は "Coming up next.." になる
+    
+            if (comingElement.textContent !== comingDisplayText) {
+                comingElement.textContent = comingDisplayText;
+                console.log("Updated changeComingText text to:", comingDisplayText);
+            }
+        } else {
+            // console.warn("Element with class '.word.changeComingText' not found."); // 必要なら警告表示
         }
     }
-    updateChangeNameText();
-    setInterval(updateChangeNameText, 60000);
+    updateDynamicTexts();
+    setInterval(updateDynamicTexts, 60000);
 
 });
