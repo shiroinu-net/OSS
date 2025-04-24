@@ -1,5 +1,5 @@
 @use "sass:math";
-@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap");
 
 *, *::before, *::after {
   padding: 0;
@@ -8,10 +8,7 @@
 }
 
 body {
-  font-family: "Zen Kaku Gothic Antique", sans-serif;
-  font-weight: 500;
-  font-style: normal;
-  letter-spacing: 0.3em;
+  font-family: "Roboto Slab", serif;  font-weight: 500;
 }
 
 $speed: 30s; 
