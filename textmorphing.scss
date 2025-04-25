@@ -1,4 +1,3 @@
-@use "sass:math";
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap");
 
 *, *::before, *::after {
@@ -8,7 +7,8 @@
 }
 
 body {
-  font-family: "Roboto Slab", serif;  font-weight: 500;
+  font-family: "Roboto Slab", serif;
+  font-weight: 500;
 }
 
 $speed: 30s; 
@@ -17,30 +17,33 @@ $wordCount: 8;
 .morphing {
   position: relative;
   font-size: 100px;
-  background-color: #000; 
-  color: #fff; 
+  background-color: #000;
+  color: #fff;
   min-height: 100vh;
   filter: contrast(25) blur(1px);
 
   .initial-content {
-      .word {
-          position: absolute;
-          top: 50%; left: 50%;
-          transform: translate(-50%, -50%);
-          color: inherit;
-          opacity: 0; // ★ 初期状態は非表示 (重なり防止のため重要)
-          animation: word $speed infinite ease-in-out;
+    .word {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: inherit;
+      opacity: 0;                     // 初期は非表示
+      animation: word $speed infinite ease-in-out;
 
-          @for $i from 0 to $wordCount {
-              &:nth-child(#{$i + 1}) {
-                  animation-delay: (math.div($speed, $wordCount + 1) * $i) - $speed;
-              }
-          }
+      // 各ワードのループ開始タイミングを負のディレイでオフセット
+      @for $i from 0 through ($wordCount - 1) {
+        &:nth-child(#{$i + 1}) {
+          // math.div の代わりに / を使用
+          animation-delay: ($speed / $wordCount) * $i - $speed;
+        }
       }
+    }
   }
 }
 
 @keyframes word {
-  0%, 5%, 100% { filter: blur(0px); opacity: 1; }
-  20%, 80% { filter: blur(1em); opacity: 0; }
+  0%, 5%, 100%  { filter: blur(0); opacity: 1; }
+  20%, 80%      { filter: blur(1em); opacity: 0; }
 }
